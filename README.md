@@ -11,4 +11,4 @@ through `grunt server` or disting through `grunt dist` and starting the instance
 
 
 
-<a href-"http://twitter.com/harry_sistalam">@harry_sistalam</a>
+<a href="http://twitter.com/harry_sistalam">@harry_sistalam</a>
