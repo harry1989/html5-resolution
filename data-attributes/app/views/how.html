@@ -1,0 +1,151 @@
+<section>
+	<h2>How do they work?</h2>
+	<p>
+	
+	Let's write some code to show the details of the each user when mouse hover, it should show the users's
+	display name, user name, title and department. Since we need the data of the user, we embed them as in the function
+	that we need in the markup using JSP or some other server side templating. 
+	<br>
+
+	<ul>
+		<li>
+			<h4>Basic version (Embedding the values within the function)</h4>
+			</p>
+			<pre><code>
+&lt;div class=&quot;users&quot;&gt;
+	&lt;span onmousehover=&quot;showUserDetails(&#39;madhsuc&#39;, &#39;ProjectLeader&#39;, &#39;IT/Enterprise&#39;)&quot;&gt;Chandra&lt;/span&gt;
+	&lt;span onmousehover=&quot;showUserDetails(&#39;muralish&#39;, &#39;ProjectLeader&#39;, &#39;IT/Enterprise&#39;)&quot;&gt;Harry&lt;/span&gt;
+	&lt;span onmousehover=&quot;showUserDetails(&#39;gaurav&#39;, &#39;ProjectLeader&#39;, &#39;IT/Enterprise&#39;)&quot;&gt;Gaurav&lt;/span&gt;
+&lt;div&gt;
+&lt;script&gt;
+	var showUserDetails = function(login, title, dept){
+		alert(&#39;Login: &#39; + login + &#39; Title: &#39; + title + &#39; Dept: &#39; + dept)
+	};
+&lt;/script&gt;
+	
+			</code></pre>
+
+			<p>Example: Hover on the names</p>
+			<div class="users jumbotron">
+				<span class="btn btn-default" onmouseover="showUserDetails('madhusuc', 'PL', 'IT/Enterprise')">Chandra</span>
+				<span class="btn btn-default" onmouseover="showUserDetails('muralish', 'SMT', 'IT/Enterprise')">Harry</span>
+				<span class="btn btn-default" onmouseover="showUserDetails('jainga', 'MT', 'IT/Enterprise')">Gaurav</span>
+			</div>
+			<script>
+				var showUserDetails = function(login, title, dept){
+					$('#login').text(login);
+					$('#title').text(title);
+					$('#dept').text(dept);
+					$('#user_modal').modal();
+				}
+			</script>
+			<h5>Cons:</h5>
+
+			<ul>
+				<li>Inline javascript</li>
+				<li>Once the user details such as username/department are embedded inside mousehover function, there is no
+				way to retrive them from the markup (ex: What if tomorrow if you don't want to show the project leaders) </li>
+			</ul>
+		</li>
+
+		<li>
+			<h4>Improved version(Embedding the values in the classes/rel attributes)</h4>
+			<i>So the data must be embeded in a accessable way. But how? Here we embed the data in accessable way but not semantic!</i>
+
+			<pre><code>
+&lt;div class=&quot;users&quot;&gt;
+	&lt;span class=&#39;madhsuc, ProjectLeader, IT/Enterprise&#39;&gt;Chandra&lt;/span&gt;
+&lt;/div&gt;	
+
+Or
+
+&lt;div class=&quot;users&quot;&gt;
+	&lt;span rel=&#39;madhsuc, ProjectLeader, IT/Enterprise&#39;&gt;Gaurav&lt;/span&gt;
+&lt;/div&gt;
+&lt;script&gt;
+	$(&#39;.users &gt; span&#39;).bind(&#39;click&#39;, showUserDetails);
+	var showUserDetails = function(){
+		var values = this.className.split(&#39;,&#39;); // this.getAttribute(&quot;rel&quot;)
+		alert(&#39;Login: &#39; + values[0] + &#39; Title: &#39; + values[1] + &#39; Dept: &#39; + values[3])
+	};
+&lt;/script&gt;
+			</code></pre>
+
+			<p>Example: Hover on the names</p>
+			<div class="users-2 jumbotron">
+				<span class="btn btn-default" rel='madhusuc, PL, IT/Enterprise'>Chandra</span>
+				<span class="btn btn-default" rel='muralish, SMT, IT/Enterprise'>Harry</span>
+				<span class="btn btn-default" rel='jainga, MT, IT/Enterprise'>Gaurav</span>
+			</div>
+			<script>
+				$('.users-2 span').on('mouseover', function(){
+					var elems = this.getAttribute('rel').split(',');
+					showUserDetails(elems[0], elems[1], elems[2]);
+				});
+			</script>
+
+			<p>Although the data can be accessed via $(ele).class.split(','), somehow this doesn't feel **right** to put the values in class/rel or any attribute for that matter 
+			<pre><code>
+&lt;span login=&quot;muralish&quot; department=&quot;It/enterprise&quot;&gt;&lt;/span&gt;
+			</code></pre>
+			but W3C validator will throw warnings/errors since it defeats the semantics of the web. 
+			</p>
+		</li>
+
+		<li>
+			<h4>Use data attributes</h4>
+
+			<p>You can embed the any value in data-* attribue and access them easily! Advantage is this is supported in all **modren**
+			browsers.</p>
+			<pre><code>
+&lt;div&gt;
+	&lt;span data-login=&quot;madhusuc&quot; data-title=&quot;PL&quot;&gt;Chandra&lt;/span&gt;
+	&lt;span data-login=&quot;muralish&quot; data-title=&quot;SMT&quot;&gt;Harry&lt;/span&gt;
+	&lt;span data-login=&quot;jainga&quot; data-title=&quot;MT&quot;&gt;Gaurav&lt;/span&gt;
+&lt;/div&gt;
+			</code></pre>
+
+			<p>Example: Hover on the names</p>
+			<div class="users-3 jumbotron">
+				<span class="btn btn-default" data-login="madhusuc" data-title="PL" data-dept="IT/Enterprise">Chandra</span>
+				<span class="btn btn-default" data-login="muralish" data-title="SMT" data-dept="IT/Enterprise">Harry</span>
+				<span class="btn btn-default" data-login="jainga" data-title="MT" data-dept="IT/Enterprise">Gaurav</span>
+			</div>
+
+			<script>
+				$('.users-3 span').on('mouseover', function(){
+					var login = this.dataset.login,
+						title = this.dataset.title,
+						dept  = this.dataset.dept;
+
+					showUserDetails(login, title, dept);
+				});
+			</script>
+		</li>
+	</ul>
+
+	<h4>How to access the data?</h4>
+
+	<p>Native javascript:</p>
+	<pre><code>
+elem.getAttribute('data-login')
+elem.dataset.login
+	</code></pre>
+
+	<p>These attribute values can not only be read but also can be writtable!</p>
+	<pre><code>
+ele.dataset.login = 'test'
+	</code></pre>
+
+	 
+	<p>jQuery:</p>
+
+	<pre><code>
+$(ele).data('login')
+	</code></pre>
+
+	<p>Care must be taken when accessing the data attributes that are separated by '-'. In this case you should access the value via camelCase </p>
+	<pre><code>
+&lt;a id=&quot;user&quot; data-user-login=&quot;muralish&quot;&gt;&lt;/a&gt;
+var user_login = $(&#39;#user&#39;).data(&#39;userLogin&#39;);	</code></pre>
+</section>

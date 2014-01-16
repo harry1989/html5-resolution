@@ -1,0 +1,58 @@
+<div class="lead">
+Here we will explore the various features that can be done on the form itself.
+</div>
+
+
+<h3>Don't like HTML5 validation?</h3>
+
+If you don't like the HTML5 native validations and want to relay on server-side validations? then you can
+add novalidate attribute to the form node.
+<div class="demo">
+	<form novalidate>
+		<label>Enter your email: <input type="email">
+		<span>I don't care to do client side validation, I will relay on server-side validation and display any errors below</span>
+		<span ng-model="error"></span>
+	</form>
+</div>
+
+
+<h3>Form association</h3>
+<p>Often you will end up with a form where different input elements are scattered across the page? Like below.</p>
+<p>Let's see how we can deal with this as of now.</p>
+
+<p>
+Add a class like 'form-element' for all the scattered elements and provide a submit handler button. When a form is submitted read all the input field values and make a Ajax request.</p>
+<p>
+Cons:
+	<ul>
+		<li>Your validations won't work</li>
+		<li>Painful task to reading different input elements and their values</li>
+	</ul>
+
+After that you create a hidden form and add all these as name/values pairs and submit the hidden form.	
+</p>
+
+<h4>How can be do better?</h4>
+
+<p>HTML5 forms provide couple of alternatives to deal with this. Each of the form elements scattered around the page, can be associated with a form. So when the submit functon is called. All your form elements are validated and then you can use jquery.form serialize() to submit the form.</p>
+<div class="demo">
+	<form novalidate id="outsideForm">
+		<label>Enter your email: <input type="email">
+		<span>I don't care to do client side validation, I will relay on server-side validation and display any errors below</span>
+		<span ng-model="error"></span>
+	</form>
+		<!-- this is outside the form element -->
+		<input type="password" form="outsideForm">
+</div>
+
+<h4>What if you want to modify values/do additional validation?</h4>
+
+<p>In that case, you have no option but to read all the fields manually, but instead of adding the name/value pairs to a hidden form you can add them to a FormData object. Advantage with this is that it supports file uploading too.</p>
+<div class="demo">
+	<form novalidate>
+		<label>Enter your email: <input type="email">
+		<span>I don't care to do client side validation, I will relay on server-side validation and display any errors below</span>
+		<span ng-model="error"></span>
+	</form>
+</div>
+

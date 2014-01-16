@@ -1,0 +1,89 @@
+<section class="future">
+<h2>What else can be done?</h2>
+
+<ul>
+	<li>
+		<p>They can be used in CSS selectors for styling</p>
+		<pre><code>
+&lt;div&gt;
+&lt;span data-login=&quot;madhusuc&quot; data-title=&quot;PL&quot;&gt;Chandra&lt;/span&gt;
+&lt;span data-login=&quot;muralish&quot; data-title=&quot;SMT&quot;&gt;Harry&lt;/span&gt;
+&lt;span data-login=&quot;jainga&quot; data-title=&quot;MT&quot;&gt;Gaurav&lt;/span&gt;
+&lt;/div&gt;
+&lt;style&gt;
+	span[data-title=&quot;PL&quot;]{
+		background-color: #eaeaea
+	}
+&lt;/style&gt;
+		</code></pre>
+	<div class="users-4">
+		<span class="btn btn-default" data-login="madhusuc" data-title="PL">Chandra</span>
+		<span class="btn btn-default" data-login="muralish" data-title="SMT">Harry</span>
+		<span class="btn btn-default" data-login="jainga" data-title="MT">Gaurav</span>
+	</div>
+	<style>
+		.future .users-4 span[data-title="PL"]{
+			border-color: red;
+		}
+	</style>
+	</li>
+	<li>
+		<p>They can be used in CSS expressions, We are not there quite yet to utitlize the data attributes in all CSS expressions,
+it is supported only for <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/attr">content right now</a> </p>
+		<pre><code>
+&lt;div&gt;
+&lt;span data-content=&quot;madhusuc&quot; data-title=&quot;PL&quot;&gt;Chandra&lt;/span&gt;
+&lt;span data-content=&quot;muralish&quot; data-title=&quot;SMT&quot;&gt;Harry&lt;/span&gt;
+&lt;span data-content=&quot;jainga&quot; data-title=&quot;MT&quot;&gt;Gaurav&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+	span:before{
+		content: attr(data-content)
+	}
+&lt;/style&gt;
+		</code></pre>
+		
+		<div class="users-5 ">
+			<span class="btn btn-default" data-content="madhusuc" data-title="PL">Chandra</span>
+			<span class="btn btn-default" data-content="muralish" data-title="SMT">Harry</span>
+			<span class="btn btn-default" data-content="jainga" data-title="MT">Gaurav</span>
+		</div>
+
+	<style>
+		.users-5 span:before{
+			content: attr(data-content) '-'
+		}
+	</style>
+		
+		<br>
+
+		<p> When they are fully supported you can write code like below..</p>
+		<pre><code>
+&lt;div&gt;
+	&lt;span data-color=&quot;blue&quot;&gt;I am in blue&lt;/span&gt;
+	&lt;span data-color=&quot;red&quot;&gt;I am in blue&lt;/span&gt;
+&lt;/div&gt;
+&lt;style&gt;
+	span:before{
+		color: attr(data-color)
+	}
+&lt;/style&gt;
+		</code></pre>
+	</li>
+
+	<li>
+		<p> Many librabries already support data-* attributes and prefer them over the config <a href="#" data-toggle="tooltip" data-title="first tooltip" id="toottip_demo">hover over me</a></p>
+
+		<pre><code>
+&lt;a class=&quot;btn btn-default&quot; href=&quot;#&quot; data-toggle=&quot;tooltip&quot; data-title=&quot;first tooltip&quot;&gt;hover over me&lt;/a&gt;	
+		</code></pre>
+		<script>
+			$('#toottip_demo').tooltip();
+		</script>
+	</li>
+</ul>
+
+	<br>
+	<br>
+</section>
