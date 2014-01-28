@@ -4,24 +4,24 @@ Here we will explore the various features that can be done on the form itself.
 
 
 <h3>Don't like HTML5 validation?</h3>
-
+<p>
 If you don't like the HTML5 native validations and want to relay on server-side validations? then you can
 add novalidate attribute to the form node.
+</p>
 <div class="demo">
 	<form novalidate>
-		<label>Enter your email: <input type="email">
-		<span>I don't care to do client side validation, I will relay on server-side validation and display any errors below</span>
+		<div>
+		<small>I don't care to do client side validation, I will relay on server-side validation and display any errors below</small></div>
+		<label>Enter your email:</label><input type="email">
 		<span ng-model="error"></span>
 	</form>
 </div>
 
 
 <h3>Form association</h3>
-<p>Often you will end up with a form where different input elements are scattered across the page? Like below.</p>
-<p>Let's see how we can deal with this as of now.</p>
 
-<p>
-Add a class like 'form-element' for all the scattered elements and provide a submit handler button. When a form is submitted read all the input field values and make a Ajax request.</p>
+<p>Often you will end up with a form where different input elements are scattered across the page? Like below.
+We tackle this problem by class for all the scattered elements and provide a submit handler button. When a form is submitted read all the input field values and make a Ajax request.</p>
 <p>
 Cons:
 	<ul>
@@ -32,27 +32,80 @@ Cons:
 After that you create a hidden form and add all these as name/values pairs and submit the hidden form.	
 </p>
 
-<h4>How can be do better?</h4>
+Luckily HTML5 forms provide couple of easy alternatives to deal with this.
 
-<p>HTML5 forms provide couple of alternatives to deal with this. Each of the form elements scattered around the page, can be associated with a form. So when the submit functon is called. All your form elements are validated and then you can use jquery.form serialize() to submit the form.</p>
-<div class="demo">
-	<form novalidate id="outsideForm">
-		<label>Enter your email: <input type="email">
-		<span>I don't care to do client side validation, I will relay on server-side validation and display any errors below</span>
-		<span ng-model="error"></span>
-	</form>
-		<!-- this is outside the form element -->
-		<input type="password" form="outsideForm">
-</div>
+<ul>
+	<li>
+		<h4>Associating multiple input elements to a same form</h4>
+		<p>Each of the form elements scattered around the page, can be associated with a form. So when the submit functon is called. All your form elements are validated and then you can use jquery.form serialize() to submit the form.</p>
+		<div class="demo">
+			<form novalidate id="outsideForm" name="outsideForm">
+			    <u> This is inside the form </u>
+				Enter your email: <input type="email" name="username">
+			</form>
+				<!-- this is outside the form element -->
+				<u>This is outside the form</u>
+				Enter your password: <input type="password" name="password" form="outsideForm">
+		</div>
+	</li>
+	<li>
+		<h4>Form interception in native javascript</h4>
 
-<h4>What if you want to modify values/do additional validation?</h4>
+		<p>If you are using jQuery, form interception is straight forward, since the $(form).serialize() does the heavy lifting and serializes the form into name/value pairs. 
 
-<p>In that case, you have no option but to read all the fields manually, but instead of adding the name/value pairs to a hidden form you can add them to a FormData object. Advantage with this is that it supports file uploading too.</p>
-<div class="demo">
-	<form novalidate>
-		<label>Enter your email: <input type="email">
-		<span>I don't care to do client side validation, I will relay on server-side validation and display any errors below</span>
-		<span ng-model="error"></span>
-	</form>
-</div>
+<h5>Using jquery</h5>
+<pre>
+$("myform").on("submit", function(e) {
+    e.preventDefault();
+    $.post(this.action, $(this).serialize());
+});
+</pre>
 
+
+<h5>Using native javascript</h5>
+<p>But doing the same in vanilla javascript takes considerabale amount of code. It involves reading all the input
+elements and adding the values to formdata.</p>
+<pre>
+document.getElementById("myform").onsubmit = function(e) {
+	e.preventDefault();
+	 
+	var f = e.target,
+	    formData = '',
+	    xhr = new XMLHttpRequest();
+	 
+	// fetch form values
+	for (var i = 0, d, v; i < f.elements.length; i++) {
+	    d = f.elements[i];
+	    if (d.name && d.value) {
+	        v = (d.type == "checkbox" || d.type == "radio" ? (d.checked ? d.value : '') : d.value);
+	        if (v) formData += d.name + "=" + escape(v) + "&";
+	    }
+	}
+	 
+	xhr.open("POST", f.action);
+	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+	xhr.send(formData);
+ 
+}
+</pre>
+		<p>With HTML5 formData interface, user can form interception very easily. ``formData()`` optionally takes a
+		form element and returns a interface which contains all the name/value pairs of the fields within the form.
+		It also provides the way to add any field on the fly. This is particularly useful while sending the hidden values, Earlier the hidden values were present as a part of the form, now they need not be present in the DOM and can be added using HTML5 formData</p>
+<pre>
+document.getElementById("myform").onsubmit = function(e) {
+ 
+    e.preventDefault();
+    
+    var f = e.target,
+        formData = new FormData(f),
+        xhr = new XMLHttpRequest();
+
+    // add additional fiels on-the-fly!
+    formData.append("part_num", "123ABC"); 
+    
+    xhr.open("POST", f.action);
+    xhr.send(formData);
+}
+</pre>
+	</li>
+</ul>

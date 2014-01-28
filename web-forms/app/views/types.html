@@ -52,41 +52,6 @@
 	</div>
 </div>
 
-<!-- url -->
-<div class="panel panel-default">
-	<div class="panel-heading">url</div>
-	<div class="panel-body">
-	    <p>This can be used to enter email addresses and the browser will validate if the
-	    enter value is a valid email or not. You can enter multiple comma separated
-	    email addresses with "multiple" attribute.</p>
-	    <div class="demo">
-	    	<form name="email-form" ng-submit="emailForm()">
-				<div class="input-group input-group-lg">
-					<input type="url">
-				</div>
-	    	</form>
-	    </div>
-	</div>
-</div>
-
-<!-- tel -->
-<div class="panel panel-default">
-	<div class="panel-heading">telephone number</div>
-	<div class="panel-body">
-	    <p>This can be used to enter email addresses and the browser will validate if the
-	    enter value is a valid email or not. You can enter multiple comma separated
-	    email addresses with "multiple" attribute.</p>
-	    <div class="demo">
-	    	<form name="email-form" ng-submit="emailForm()">
-				<div class="input-group input-group-lg">
-					<input type="tel">
-				</div>
-	    	</form>
-	    </div>
-	</div>
-</div>
-
-
 <!-- number -->
 <div class="panel panel-default">
 	<div class="panel-heading">number</div>
@@ -124,11 +89,10 @@
 
 <!-- speech -->
 <div class="panel panel-default">
-	<div class="panel-heading">color</div>
+	<div class="panel-heading">Speech</div>
 	<div class="panel-body">
-	    <p>This can be used to enter email addresses and the browser will validate if the
-	    enter value is a valid email or not. You can enter multiple comma separated
-	    email addresses with "multiple" attribute.</p>
+	    <p>In supported browers, input can be accepted by not only text but through
+	    speech as well.</p>
 	    <div class="demo">
 	    	<form name="email-form" ng-submit="emailForm()">
 				<div class="input-group input-group-lg">
@@ -138,6 +102,7 @@
 	    </div>
 	</div>
 </div>
+
 
 
 <h3>Now different Form input attributes</h3>
@@ -180,9 +145,9 @@
 <div class="panel panel-default">
 	<div class="panel-heading">autofocus</div>
 	<div class="panel-body">
-	    <p>This can be used to enter email addresses and the browser will validate if the
-	    enter value is a valid email or not. You can enter multiple comma separated
-	    email addresses with "multiple" attribute.</p>
+	    <p>Any input element can be automatically autofocused when the page opens just by
+	    adding autofocus attribute. No need to do $(selector).focus() anymore!</p>
+	    <p>Refresh the page and see the input autofocused.</p>
 	    <div class="demo">
 	    	<form name="email-form" ng-submit="emailForm()">
 				<div class="input-group input-group-lg">
@@ -192,6 +157,26 @@
 	    </div>
 	</div>
 </div>
+
+
+<!-- autofocus -->
+<div class="panel panel-default">
+	<div class="panel-heading">pattern</div>
+	<div class="panel-body">
+	    <p>This attribute can be used enforce to accept the input 
+	    matching a particular pattern</p>
+
+	    <p>Below input only takes @gmail.com addresses</p>
+	    <div class="demo">
+	    	<form name="email-form" ng-submit="emailForm()">
+				<div class="input-group input-group-lg">
+					<input pattern=".*gmail\.com" type="email" title="Please enter a valid gmail address">
+				</div>
+	    	</form>
+	    </div>
+	</div>
+</div>
+
 
 <h4>Other attributes for the input elements</h4>
 
